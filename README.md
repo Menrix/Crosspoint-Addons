@@ -8,10 +8,10 @@ them together on top of an official CrossPoint release.
 
 ## Included add-ons
 
-| Add-on | What it does |
-| --- | --- |
-| [Crosspoint-Dogear](https://github.com/Menrix/Crosspoint-Dogear) | Bookmarks show as a folded page corner |
-| [Crosspoint-ToDoList](https://github.com/Menrix/Crosspoint-ToDoList) | To-do and shopping lists you tick on the reader, fill from phone or computer |
+| Add-on | What it does | Preview |
+| --- | --- | --- |
+| [Crosspoint-Dogear](https://github.com/Menrix/Crosspoint-Dogear) | Bookmarks show as a folded page corner | <img src="images/dogear.jpg" width="220" alt="Dog-ear on a book page"> |
+| [Crosspoint-ToDoList](https://github.com/Menrix/Crosspoint-ToDoList) | To-do and shopping lists you tick on the reader, fill from phone or computer | <img src="images/todolist.png" width="140" alt="A shopping list on the reader"> |
 
 The list and its order are in [`addons.txt`](addons.txt).
 
