@@ -45,7 +45,7 @@ Install only one of these firmwares at a time: this one already contains every a
 Add one line to `addons.txt`: the repository and the path of its patch script. The script is
 called as `python3 <script> <crosspoint folder>` and must change only what it needs.
 
-Made with the help of [Claude](https://claude.ai).
+Made with the help of Claude.
 
 ## License
 
