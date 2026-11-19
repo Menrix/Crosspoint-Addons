@@ -2,6 +2,8 @@
 
 *My CrossPoint add-ons in one firmware – install once, get them all.*
 
+![CrossPoint Add-ons: dog-ear and editable to-do lists](images/header.jpg)
+
 One firmware with all my add-ons for the
 [CrossPoint Reader](https://github.com/crosspoint-reader/crosspoint-reader) firmware.
 
