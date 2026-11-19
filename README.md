@@ -45,6 +45,12 @@ Install only one of these firmwares at a time: this one already contains every a
 Add one line to `addons.txt`: the repository and the path of its patch script. The script is
 called as `python3 <script> <crosspoint folder>` and must change only what it needs.
 
+## Made with Claude
+
+Made with the help of [Claude](https://claude.ai), an AI assistant by Anthropic. Claude wrote
+most of the code; the ideas, the design decisions and the testing on a real X4 Pro come from
+the project's author. Please keep in mind that the code was not written line by line by a human.
+
 ## License
 
 MIT, see [LICENSE](LICENSE). The add-ons keep their own licenses.
