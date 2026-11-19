@@ -1,8 +1,8 @@
-name: Build CrossPoint with all add-ons
+name: Build CrossPoint with my add-ons
 
 # Combines the add-ons listed in addons.txt (each from its own repository, current state)
 # with an official CrossPoint release into one firmware per device, and publishes it here.
-# Started by hand only for now: Actions tab -> "Build CrossPoint with all add-ons" -> Run workflow.
+# Started by hand only for now: Actions tab -> "Build CrossPoint with my add-ons" -> Run workflow.
 
 on:
   workflow_dispatch:
@@ -168,7 +168,7 @@ jobs:
             exit 1
           fi
           included="$(cat dist/addons/versions.txt 2>/dev/null || echo "- (list not found)")"
-          notes="CrossPoint ${VERSION} with all add-ons, build ${FULL}.
+          notes="CrossPoint ${VERSION} with my add-ons, build ${FULL}.
 
           Included:
           ${included}

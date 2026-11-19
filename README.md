@@ -1,8 +1,8 @@
 # CrossPoint Add-ons
 
-*All add-ons in one firmware – install once, get everything.*
+*My CrossPoint add-ons in one firmware – install once, get them all.*
 
-One firmware with all add-ons for the
+One firmware with all my add-ons for the
 [CrossPoint Reader](https://github.com/crosspoint-reader/crosspoint-reader) firmware.
 
 ## Included add-ons
@@ -27,7 +27,7 @@ Get the file for your device from **[Releases](../../releases)**:
 > tested on the X3 and X4 yet. No touch screen there, so everything runs over the buttons.
 
 Copy it to the SD card and use **Settings → SD Card Firmware Update**. Later updates:
-**Settings → Check for Updates**. It already contains every add-on, so don't install them
+**Settings → Check for Updates**. It already contains all of these add-ons, so don't install them
 separately.
 
 ## Why one firmware?
@@ -35,11 +35,11 @@ separately.
 The add-ons can't be CrossPoint plugins: they need to hook into the reader itself, the home
 screen and File Transfer, and plugins can't reach those parts. So they are built into the latest
 **official** CrossPoint. A reader can only run one firmware at a time, so this collection puts
-all add-ons together.
+my add-ons together.
 
 ## How it is built
 
-**Actions → Build CrossPoint with all add-ons → Run workflow** puts the add-ons listed in
+**Actions → Build CrossPoint with my add-ons → Run workflow** puts the add-ons listed in
 [`addons.txt`](addons.txt) on the latest official CrossPoint release and publishes the firmware
 under Releases. A new add-on is one more line in that file.
 
