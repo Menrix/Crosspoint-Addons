@@ -28,6 +28,7 @@ jobs:
     outputs:
       tag: ${{ steps.ver.outputs.tag }}
       version: ${{ steps.ver.outputs.version }}
+      full: ${{ steps.ver.outputs.full }}
     steps:
       - name: Find CrossPoint version
         id: ver
@@ -43,6 +44,8 @@ jobs:
           fi
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
           echo "version=${tag#v}" >> "$GITHUB_OUTPUT"
+          # Every build has its own number, shown in Settings and used by "Check for Updates".
+          echo "full=${tag#v}-addons.${GITHUB_RUN_NUMBER}" >> "$GITHUB_OUTPUT"
 
   build:
     needs: check
@@ -84,6 +87,16 @@ jobs:
       - name: Add all add-ons
         run: python3 addons-repo/scripts/apply_addons.py crosspoint addons "$GITHUB_REPOSITORY"
 
+      - name: Set the version (${{ needs.check.outputs.full }})
+        env:
+          VERSION: ${{ needs.check.outputs.version }}
+          FULL: ${{ needs.check.outputs.full }}
+        run: |
+          set -euo pipefail
+          test "$(grep -c "^version = ${VERSION}\$" crosspoint/platformio.ini)" = 1 || \
+            { echo "ADD-ONS FAILED: version line not found in platformio.ini"; exit 1; }
+          sed -i "s/^version = ${VERSION}\$/version = ${FULL}/" crosspoint/platformio.ini
+
       - uses: actions/setup-python@v6
         with:
           python-version: "3.13"
@@ -118,13 +131,13 @@ jobs:
         run: |
           # The on-device updater looks for exactly this file name.
           cp "crosspoint/.pio/build/${{ matrix.env }}/firmware.bin" \
-             "crosspoint-${{ needs.check.outputs.version }}-${{ matrix.device }}.bin"
+             "crosspoint-${{ needs.check.outputs.full }}-${{ matrix.device }}.bin"
 
       - uses: actions/upload-artifact@v6
         with:
           name: firmware-${{ matrix.device }}
           path: |
-            crosspoint-${{ needs.check.outputs.version }}-${{ matrix.device }}.bin
+            crosspoint-${{ needs.check.outputs.full }}-${{ matrix.device }}.bin
             addons/versions.txt
           if-no-files-found: error
 
@@ -144,6 +157,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ needs.check.outputs.version }}
+          FULL: ${{ needs.check.outputs.full }}
           TAG: ${{ needs.check.outputs.tag }}
         run: |
           set -euo pipefail
@@ -154,27 +168,21 @@ jobs:
             exit 1
           fi
           included="$(cat dist/addons/versions.txt 2>/dev/null || echo "- (list not found)")"
-          notes="CrossPoint ${VERSION} with all add-ons.
+          notes="CrossPoint ${VERSION} with all add-ons, build ${FULL}.
 
           Included:
           ${included}
 
-          - crosspoint-${VERSION}-x4pro.bin: Xteink X4 Pro (tested)
-          - crosspoint-${VERSION}-x3-x4.bin: Xteink X3 and X4 (one file for both) - NOT TESTED on a device.
-          No touch screen there: everything runs over the buttons, which makes the add-ons harder to use.
+          - crosspoint-${FULL}-x4pro.bin: Xteink X4 Pro (tested)
+          - crosspoint-${FULL}-x3-x4.bin: Xteink X3 and X4 (one file for both) - NOT TESTED on a device.
+            No touch screen there: everything runs over the buttons, which makes the add-ons harder to use.
 
           Install: copy the file to the SD card root, then Settings -> SD Card Firmware Update.
-          Or: https://crosspointreader.com/#flash-tools -> your device -> Custom .bin
           Later updates: Settings -> Check for Updates.
 
           Official changes in this version: https://github.com/${UPSTREAM}/releases/tag/${TAG}"
-          if gh release view "$VERSION" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
-            gh release upload "$VERSION" "${files[@]}" --clobber --repo "$GITHUB_REPOSITORY"
-            gh release edit "$VERSION" --notes "$notes" --repo "$GITHUB_REPOSITORY"
-          else
-            gh release create "$VERSION" "${files[@]}" --repo "$GITHUB_REPOSITORY" \
-              --title "CrossPoint ${VERSION} + add-ons" --notes "$notes" --latest
-          fi
+          gh release create "$FULL" "${files[@]}" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+            --title "CrossPoint ${VERSION} + add-ons (build ${FULL##*.})" --notes "$notes" --latest
           if [ "${{ needs.build.result }}" != "success" ]; then
             echo "At least one device build failed; published what was built."
             exit 1
