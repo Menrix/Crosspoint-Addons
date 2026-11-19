@@ -30,7 +30,7 @@ Copy it to the SD card and use **Settings → SD Card Firmware Update**. Later u
 **Settings → Check for Updates**. It already contains all of these add-ons, so don't install them
 separately.
 
-## Why one firmware?
+## Why a firmware and not a plugin?
 
 The add-ons can't be CrossPoint plugins: they need to hook into the reader itself, the home
 screen and File Transfer, and plugins can't reach those parts. So they are built into the latest
